@@ -2,42 +2,71 @@
 #include <stdlib.h>
 #include <time.h>
 
-void print_arr(int arr[], int size);
+void generateRandomArray(int arr[], int size);
+void printArray(int arr[], int size);
 void swap(int arr[], int i, int j);
 void bubbleSort(int arr[], int size);
-int partitioning(int arr[], int start, int end);
-void quickSort(int arr[], int start, int end);
+int partitioningStart(int arr[], int start, int end);
+void quickSortStart(int arr[], int start, int end);
+int partitioningEnd(int arr[], int start, int end);
+void quickSortEnd(int arr[], int start, int end);
 
 int main()
 {
-    srand(time(NULL)); // INITIALIZING RANDOM NUMBERS
-    int size = 10;
+    
+    srand(time(NULL));
+    
+    int size = 30;
+    
     int arr1[size];
     int arr2[size];
-    for(int i=0;i<size;i++)
-    {
-        arr1[i] = rand() % size;
-        arr2[i] = arr1[i];
-    }
+    int arr3[size];
     
-    printf("ORIGINAL ARRAY:\n");
-    print_arr(arr1, size);
+    generateRandomArray(arr1, size);
+    generateRandomArray(arr2, size);
+    generateRandomArray(arr3, size);
     
+    printf("ORIGINAL ARRAY 1: \n");
+    printArray(arr1, size);
     bubbleSort(arr1, size);
-    printf("SORTED ARRAY (BUBBLE SORT):\n");
-    print_arr(arr1, size);
+    printf("SORTED ARRAY 1 (BUBBLE SORT): \n");
+    printArray(arr1, size);
+    printf("\n\n");
     
-    quickSort(arr2, 0, size-1);
-    printf("SORTED ARRAY (QUICK SORT):\n");
-    print_arr(arr2, size);
+    
+    printf("ORIGINAL ARRAY 2: \n");
+    printArray(arr2, size);
+    quickSortEnd(arr2, 0, size-1);
+    printf("SORTED ARRAY 2 (QUICK SORT - PIVOT AT THE END): \n");
+    printArray(arr2, size);
+    printf("\n\n");
+    
+    
+    printf("ORIGINAL ARRAY 3: \n");
+    printArray(arr3, size);
+    quickSortStart(arr3, 0, size-1);
+    printf("SORTED ARRAY 3 (QUICK SORT - PIVOT AT THE START): \n");
+    printArray(arr3, size);
+    printf("\n\n");
+
+    return 0;
 }
 
 
-void print_arr(int arr[], int size)
+void generateRandomArray(int arr[], int size)
 {
-    for(int i=0; i<size; i++)
+    for(int i=0; i<size;i++)
     {
-        (i == 0 ) ? printf("%d", arr[i]) : printf(" %d", arr[i]);
+        arr[i] = rand() % size;
+    }
+}
+
+
+void printArray(int arr[], int size)
+{
+    for(int i=0;i<size;i++)
+    {
+        (i == 0)? printf("%d", arr[i]) : printf(" %d", arr[i]);
     }
     printf("\n");
 }
@@ -50,50 +79,87 @@ void swap(int arr[], int i, int j)
     arr[j] = aux;
 }
 
-
 void bubbleSort(int arr[], int size)
 {
-    for(int i=0;i<size-1;i++)
+    for(int i=0; i<size-1; i++)
     {
-        for (int j=0;j<size-1-i;j++)
+        for(int j=0; j<size-1-i;j++)
         {
-            if (arr[j] > arr[j+1])
-            {
-                swap(arr, j, j+1);
-            }
+            if(arr[j] > arr[j+1]) swap(arr, j, j+1);
         }
     }
 }
 
 
-int partitioning(int arr[], int start, int end)
+int partitioningEnd(int arr[], int start, int end)
 {
     int pivot = end;
-    int less_than_ptr = start;
-    if (start < end)
+    int less_than = start;
+    
+    for(int i=start; i<end; i++)
     {
-        for(int i=start;i<end;i++)
+        if((arr[i] < arr[pivot]) && (less_than != i))
         {
-            if(arr[i] <= arr[pivot])
-            {
-                swap(arr, i, less_than_ptr);
-                less_than_ptr++;
-            }
+            swap(arr, less_than, i);
+            less_than++;
         }
-        swap(arr, less_than_ptr, pivot);
+        else if(arr[i] < arr[pivot])
+        {
+            less_than++;
+        }
     }
-    return less_than_ptr;
+    swap(arr, less_than, pivot);
+    
+    return less_than;
 }
 
 
-void quickSort(int arr[], int start, int end)
+void quickSortEnd(int arr[], int start, int end)
 {
-    int pivot = end;
+    int pivot = 0;
     
     if(start < end)
     {
-        pivot = partitioning(arr, start, pivot);
-        quickSort(arr, start, pivot - 1);
-        quickSort(arr, pivot + 1, end);
+        pivot = partitioningEnd(arr, start, end);
+        quickSortEnd(arr, start, pivot - 1);
+        quickSortEnd(arr, pivot + 1, end);
+    }
+}
+
+
+int partitioningStart(int arr[], int start, int end)
+{
+    int pivot = start;
+    int less_than = start+1;
+    
+    for(int i=start+1; i<=end; i++)
+    {
+        if((arr[i] < arr[pivot]) && (less_than != i))
+        {
+            swap(arr, less_than, i);
+            less_than++;
+        }
+        else if(arr[i] < arr[pivot])
+        {
+            less_than++;
+        }
+    }
+    
+    less_than--;
+    swap(arr, less_than, pivot);
+    
+    return less_than;
+}
+
+
+void quickSortStart(int arr[], int start, int end)
+{
+    int pivot = 0;
+    
+    if(start < end)
+    {
+        pivot = partitioningStart(arr, start, end);
+        quickSortStart(arr, start, pivot - 1);
+        quickSortStart(arr, pivot + 1, end);
     }
 }
