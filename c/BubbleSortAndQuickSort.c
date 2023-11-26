@@ -9,6 +9,7 @@
 void generateRandomArray(int arr[], int size);
 void printArray(int arr[], int size);
 void swap(int arr[], int i, int j);
+void bubbleSort(int arr[], int size, int direction);
 int partitioningStart(int arr[], int start, int end, int direction);
 void quickSortStart(int arr[], int start, int end, int direction);
 int partitioningEnd(int arr[], int start, int end, int direction);
@@ -23,32 +24,45 @@ int main()
     
     int arr1[size];
     int arr2[size];
+    int arr3[size];
     
     generateRandomArray(arr1, size);
     generateRandomArray(arr2, size);
+    generateRandomArray(arr3, size);
     
-
     printf("ORIGINAL ARRAY 1: \n");
     printArray(arr1, size);
-    quickSortEnd(arr1, 0, size-1, ASC);
-    printf("SORTED ARRAY 1 (QUICK SORT - PIVOT AT THE END (ASCENDENT)): \n");
+    bubbleSort(arr1, size, ASC);
+    printf("SORTED ARRAY 1 (BUBBLE SORT (ASCENDENT)): \n");
     printArray(arr1, size);
     
-    quickSortEnd(arr1, 0, size-1, DESC);
-    printf("SORTED ARRAY 1 (QUICK SORT - PIVOT AT THE END (DESCENDENT)): \n");
+    bubbleSort(arr1, size, DESC);
+    printf("SORTED ARRAY 1 (BUBBLE SORT (DESCENDENT)): \n");
     printArray(arr1, size);
     printf("\n\n");
     
-    
+
     printf("ORIGINAL ARRAY 2: \n");
     printArray(arr2, size);
-    quickSortStart(arr2, 0, size-1, ASC);
-    printf("SORTED ARRAY 2 (QUICK SORT - PIVOT AT THE START (ASCENDENT)): \n");
+    quickSortEnd(arr2, 0, size-1, ASC);
+    printf("SORTED ARRAY 2 (QUICK SORT - PIVOT AT THE END (ASCENDENT)): \n");
     printArray(arr2, size);
     
-    quickSortStart(arr2, 0, size-1, DESC);
-    printf("SORTED ARRAY 2 (QUICK SORT - PIVOT AT THE START (DESCENDENT)): \n");
+    quickSortEnd(arr2, 0, size-1, DESC);
+    printf("SORTED ARRAY 2 (QUICK SORT - PIVOT AT THE END (DESCENDENT)): \n");
     printArray(arr2, size);
+    printf("\n\n");
+    
+    
+    printf("ORIGINAL ARRAY 3: \n");
+    printArray(arr3, size);
+    quickSortStart(arr3, 0, size-1, ASC);
+    printf("SORTED ARRAY 3 (QUICK SORT - PIVOT AT THE START (ASCENDENT)): \n");
+    printArray(arr3, size);
+    
+    quickSortStart(arr3, 0, size-1, DESC);
+    printf("SORTED ARRAY 3 (QUICK SORT - PIVOT AT THE START (DESCENDENT)): \n");
+    printArray(arr3, size);
     printf("\n\n");
     
     return 0;
@@ -79,6 +93,35 @@ void swap(int arr[], int i, int j)
     int aux = arr[i];
     arr[i] = arr[j];
     arr[j] = aux;
+}
+
+void bubbleSort(int arr[], int size, int direction)
+{
+    switch(direction)
+    {
+        case 0:
+        {
+            for(int i=0;i<size-1; i++)
+            {
+                for(int j=0;j<size-1-i;j++)
+                {
+                    if(arr[j] < arr[j+1]) swap(arr, j, j+1);
+                }
+            }
+            break;
+        }
+        case 1:
+        {
+            for(int i=0; i<size-1; i++)
+            {
+                for(int j=0; j<size-1-i;j++)
+                {
+                    if(arr[j] > arr[j+1]) swap(arr, j, j+1);
+                }
+            }
+        }
+        break;
+    }
 }
 
 
