@@ -14,13 +14,21 @@ No *insertBegin(No **p, int value);
 No *insertEnd(No **p, int value);
 No *emptyLinkedList(No *q);
 No *insertSorted(No **p, int value);
-
+int findIndex(No *q, int value);
+int findIndexSorted(No *q, int value);
+int countElement(No *q, int value);
+int countElementSorted(No *q, int value);
+No *deleteStart(No **p);
+No *deleteEnd(No **p);
 
 int main()
 {
     srand(time(NULL));
     int rand_num=0;
     int size = 20;
+    int value_to_find = rand()%size;
+    int item_index = 0;
+    int item_found_times = 0;
     No* linkedList = NULL;
     
     std::cout << "Inserting at the beggining of the linked list..." << "\n";
@@ -31,21 +39,43 @@ int main()
         (i==0)? std::cout << rand_num: std::cout << "|" << rand_num;
         linkedList = insertBegin(&linkedList, rand_num);
     }
-    printf("\n");
+    std::cout << "\n";
     printLinkedList(linkedList);
+    item_index = findIndex(linkedList, value_to_find);
+    (item_index!=-1)?std::cout << "Value " << value_to_find << " found at index " << item_index << "\n": std::cout << "Value " << value_to_find << " not found in the list!" << "\n";
+    item_found_times = countElement(linkedList, value_to_find);
+    (item_index!=-1)?std::cout << "Value " << value_to_find << " found " << item_found_times << " times" << "\n" : std::cout << "Value " << value_to_find << " not found in the list!" << "\n";
+    std::cout << "Deleting at the start..." << "\n";
+    linkedList = deleteStart(&linkedList);
+    printLinkedList(linkedList);
+    std::cout << "Deleting at the end..." << "\n";
+    linkedList = deleteEnd(&linkedList);
+    printLinkedList(linkedList);
+    std::cout << "\n\n";
     linkedList = emptyLinkedList(linkedList);
-
+    
 
     std::cout << "Inserting at the end of the linked list..." << "\n";
     
     for(int i=0;i<size;i++)
     {
         rand_num = rand()%size;
-        (i==0)? std::cout << rand_num: std::cout << "|" << rand_num;
+        (i==0)?std::cout << rand_num : std::cout << "|" << rand_num;
         linkedList = insertEnd(&linkedList, rand_num);
     }
-    printf("\n");
+    std::cout << "\n";
     printLinkedList(linkedList);
+    item_index = findIndex(linkedList, value_to_find);
+    (item_index!=-1)?std::cout << "Value " << value_to_find << " found at index " << item_index << "\n" : std::cout << "Value " << value_to_find << " not found in the list!" << "\n";
+    item_found_times = countElement(linkedList, value_to_find);
+    (item_index!=-1) ? std::cout << "Value " << value_to_find << " found " << item_found_times << " times\n" : std::cout << "Value " << value_to_find << " not found in the list!" << "\n";
+    std::cout << "Deleting at the start..." << "\n";
+    linkedList = deleteStart(&linkedList);
+    printLinkedList(linkedList);
+    std::cout << "Deleting at the end..." << "\n";
+    linkedList = deleteEnd(&linkedList);
+    printLinkedList(linkedList);
+    std::cout << "\n\n";
     linkedList = emptyLinkedList(linkedList);
     
     
@@ -54,11 +84,22 @@ int main()
     for(int i=size;i>0;i--)
     {
         rand_num = rand()%size;
-        (i==0)? std::cout << rand_num: std::cout << "|" << rand_num;
+        (i==0)?std::cout << rand_num :std::cout << "|" << rand_num;
         linkedList = insertSorted(&linkedList, rand_num);
     }
-    printf("\n");
+    std::cout << "\n";
     printLinkedList(linkedList);
+    item_index = findIndexSorted(linkedList, value_to_find);
+    (item_index!=-1)?std::cout << "Value " << value_to_find << " found at index " << item_index << "\n" : std::cout << "Value " << value_to_find << " not found in the list!" << "\n";
+    item_found_times = countElementSorted(linkedList, value_to_find);
+    (item_index!=-1)?std::cout << "Value " << value_to_find << " found " << item_found_times << " times\n" : std::cout << "Value " << value_to_find << "not found in the list!" << "\n";
+    std::cout << "Deleting at the start..." << "\n";
+    linkedList = deleteStart(&linkedList);
+    printLinkedList(linkedList);
+    std::cout << "Deleting at the end..." << "\n";
+    linkedList = deleteEnd(&linkedList);
+    printLinkedList(linkedList);
+    std::cout << "\n\n";
     linkedList = emptyLinkedList(linkedList);
 
     return 0;
@@ -69,14 +110,14 @@ void printLinkedList(No *q)
 {
     if(q==NULL)
     {
-        std::cout << "Empty List!" << "\n";
+        std::cout << "Empty List!";
     }
     while(q!=NULL)
     {
-        printf(" %d", q->value);
+        std::cout << " " << q->value;
         q = q->prox;
     }
-    printf("\n");
+    std::cout << "\n";
 }
 
 
@@ -180,5 +221,151 @@ No *insertSorted(No **p, int value)
         aux->prox=NULL;
         temp->prox=aux;
     }
+    return q;
+}
+
+
+int findIndex(No *q, int value)
+{
+    if(q==NULL)
+    {
+        return -1;
+    }
+    int index=0;
+    while(q!=NULL)
+    {
+        if(value==q->value)
+        {
+            return index;
+        }
+        else
+        {
+            q = q->prox;
+            index++;
+        }
+    }
+    return -1;
+}
+
+
+int findIndexSorted(No *q, int value)
+{
+    if(q==NULL)
+    {
+        return -1;
+    }
+    int index=0;
+    while(q!=NULL)
+    {
+        if(value<q->value)
+        {
+            return -1;
+        }
+        if(value==q->value)
+        {
+            return index;
+        }
+        else
+        {
+            q = q->prox;
+            index++;
+        }
+    }
+    return -1;
+}
+
+
+int countElement(No *q, int value)
+{
+    int sum = 0;
+    if(q==NULL)
+    {
+        return sum;
+    }
+    while(q!=NULL)
+    {
+        if(value==q->value)
+        {
+            sum++;
+            q = q->prox;
+        }
+        else
+        {
+            q = q->prox;
+        }
+    }
+    return sum;
+}
+
+
+
+int countElementSorted(No *q, int value)
+{
+    int sum = 0;
+    if(q==NULL)
+    {
+        return sum;
+    }
+    while(q!=NULL)
+    {
+        if(value<q->value)
+        {
+            return sum;
+        }
+        if(value==q->value)
+        {
+            sum++;
+            q = q->prox;
+        }
+        else
+        {
+            q = q->prox;
+        }
+    }
+    return sum;
+}
+
+
+No *deleteStart(No **p)
+{
+    No *q = *p;
+    No *aux = q;
+    if(q==NULL) return q;
+    else if (q->prox!=NULL)
+    {
+        aux = q;
+        q = q->prox;
+        free(aux);
+    }
+    else
+    {
+        aux = q;
+        q = NULL;
+        free(aux);
+    }
+    
+    return q;
+}
+
+
+No *deleteEnd(No **p)
+{
+    No *q = *p;
+    No *aux = q;
+    if(q==NULL) return q;
+    else if(q->prox==NULL)
+    {
+        q = NULL;
+        free(aux);
+        return q;
+    }
+    while(aux->prox->prox!=NULL)
+    {
+        aux = aux->prox;
+    }
+    No *temp = aux->prox;
+    aux->prox=NULL;
+    free(temp);
+    
     return q;
 }
