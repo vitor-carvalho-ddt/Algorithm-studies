@@ -20,6 +20,8 @@ int countElement(No *q, int value);
 int countElementSorted(No *q, int value);
 No *deleteStart(No **p);
 No *deleteEnd(No **p);
+No *deleteNumber(No **p, int value);
+
 
 int main()
 {
@@ -51,6 +53,9 @@ int main()
     std::cout << "Deleting at the end..." << "\n";
     linkedList = deleteEnd(&linkedList);
     printLinkedList(linkedList);
+    std::cout << "Deleting random number " << rand_num << "...\n";
+    linkedList = deleteNumber(&linkedList, rand_num);
+    printLinkedList(linkedList);
     std::cout << "\n\n";
     linkedList = emptyLinkedList(linkedList);
     
@@ -75,6 +80,9 @@ int main()
     std::cout << "Deleting at the end..." << "\n";
     linkedList = deleteEnd(&linkedList);
     printLinkedList(linkedList);
+    std::cout << "Deleting random number " << rand_num << "...\n";
+    linkedList = deleteNumber(&linkedList, rand_num);
+    printLinkedList(linkedList);
     std::cout << "\n\n";
     linkedList = emptyLinkedList(linkedList);
     
@@ -98,6 +106,9 @@ int main()
     printLinkedList(linkedList);
     std::cout << "Deleting at the end..." << "\n";
     linkedList = deleteEnd(&linkedList);
+    printLinkedList(linkedList);
+    std::cout << "Deleting random number " << rand_num << "...\n";
+    linkedList = deleteNumber(&linkedList, rand_num);
     printLinkedList(linkedList);
     std::cout << "\n\n";
     linkedList = emptyLinkedList(linkedList);
@@ -367,5 +378,42 @@ No *deleteEnd(No **p)
     aux->prox=NULL;
     free(temp);
     
+    return q;
+}
+
+No *deleteNumber(No **p, int value)
+{
+    No *q = *p;
+    if(q==NULL) return q;
+
+    if(q->value==value)
+    {
+        No *aux = q;
+        q = q->prox;
+        free(aux);
+        return q;
+    }
+    
+    No* temp = q;
+    while(temp->prox->prox!=NULL)
+    {
+        if(temp->prox->value==value)
+        {
+            No *aux = temp->prox;
+            temp->prox = temp->prox->prox;
+            free(aux);
+            return q;
+        }
+        else
+        {
+            temp = temp->prox;    
+        }
+    }
+    if(temp->prox->value==value)
+    {
+        No *aux = temp->prox;
+        temp->prox = NULL;
+        free(aux);
+    }
     return q;
 }
