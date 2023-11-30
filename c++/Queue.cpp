@@ -102,6 +102,7 @@ void enqueue(Queue *q, int value)
     for(temp=q;temp->prox!=NULL;temp=temp->prox);
     
     temp->prox = aux;
+    q->value++;
 }
 
 
@@ -123,19 +124,13 @@ void dequeue(Queue *q)
     Queue *aux = q->prox;
     q->prox = q->prox->prox;
     free(aux);
+    q->value--;
 }
 
 
 int queueLength(Queue *q)
 {
-    int len = 0;
-    if(q->prox==NULL) return len;
-    
-    for(q=q->prox;q->prox!=NULL;q=q->prox)
-        len++;
-    len++;
-    
-    return len;
+    return q->value;
 }
 
 
