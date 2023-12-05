@@ -2,10 +2,12 @@
 #include <stdlib.h>
 #include <time.h>
 
+
 void printArr(int *arr, int size);
 void fillArr(int *arr, int size);
 void mergeSort(int *arr, int size);
 void merge(int *arr, int size, int *left, int sizeLeft, int *right, int sizeRight);
+
 
 int main()
 {
