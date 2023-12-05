@@ -6,6 +6,7 @@
 #define ASC 1
 #define DESC 0
 
+
 void generateRandomArray(int arr[], int size);
 void printArray(int arr[], int size);
 void swap(int arr[], int i, int j);
