@@ -21,11 +21,11 @@ int main(){
     /* Here i will be creating 2 types of graph representations:
      * 1° Will be usin a matrix
      * 2° will be using a linked list (will create and declare linke list in the same file)*/
-    printf("Printing Directionless Graph 'Matrix' Representation:\n");
+    printf("Printing Undirected Graph 'Matrix' Representation:\n");
     int matrix_graph[SIZE][SIZE] = { {0, 1, 1, 1, 0}, {1, 0, 1, 0, 0}, {1, 1, 0, 1, 1}, {1, 0, 1, 0, 0}, {0, 0, 1, 0, 0} };
     printMatrixGraph(SIZE, matrix_graph);
     
-    printf("Printing Directionless Graph TESTING ALL FUNCTIONS -> 'Linked List' Representation:\n");
+    printf("Printing Undirected Graph TESTING ALL FUNCTIONS -> 'Linked List' Representation:\n");
     No *linked_list = NULL;
     printf("Initializing Linked List 'A'...\n");
     initLinkedList(&linked_list, "A");
@@ -60,7 +60,7 @@ int main(){
     freeLinkedList(&linked_list);
     printf("%p\n", linked_list);
 
-    printf("Printing Directionless Graph 'Linked List' Representation:\n");
+    printf("Printing Undirected Graph 'Linked List' Representation:\n");
 
     printf("Initializing Linked List 'A'...\n");
     initLinkedList(&linked_list, "A");
