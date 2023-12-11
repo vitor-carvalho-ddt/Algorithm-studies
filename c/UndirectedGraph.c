@@ -9,12 +9,25 @@ typedef struct no{
 } No;
 
 
+typedef struct{
+    No **array;
+    int used;
+    int initial_size;
+} DArray;
+
+
 void initLinkedList(No **p, char *node_name);
 void printLinkedList(No *p);
 void insertEndLinkedList(No *p, char *node_name);
 void removeElementLinkedList(No *p, char *node_name);
 void freeLinkedList(No **p);
 void printMatrixGraph(int size, int matrix_graph[][size]);
+void printDArray(DArray *p);
+void initDArray(DArray *p, int initial_size);
+void insertDArray(DArray *p, No* value);
+void fillDArray(DArray *p, int size);
+void removeElementDArray(DArray *p, int index);
+void freeDArray(DArray *p);
 
 
 int main(){
@@ -39,7 +52,7 @@ int main(){
     printf("Inserting connection 'D'...\n");
     insertEndLinkedList(linked_list, "D");
     printLinkedList(linked_list);
-
+    
     printf("Deleting connection 'C'...\n");
     removeElementLinkedList(linked_list, "C");
     printLinkedList(linked_list); 
@@ -60,45 +73,60 @@ int main(){
     freeLinkedList(&linked_list);
     printf("%p\n", linked_list);
 
+    DArray graph;
+    initDArray(&graph, 5);
+
     printf("Printing Undirected Graph 'Linked List' Representation:\n");
-
+    No *a_node;
     printf("Initializing Linked List 'A'...\n");
-    initLinkedList(&linked_list, "A");
-    insertEndLinkedList(linked_list, "B");
-    insertEndLinkedList(linked_list, "C");
-    insertEndLinkedList(linked_list, "D");
-    printLinkedList(linked_list);
-    freeLinkedList(&linked_list);
+    initLinkedList(&a_node, "A");
+    insertEndLinkedList(a_node, "B");
+    insertEndLinkedList(a_node, "C");
+    insertEndLinkedList(a_node, "D");
+    printLinkedList(a_node);
+    insertDArray(&graph, a_node);
 
+    No *b_node;
     printf("Initializing Linked List 'B'...\n");
-    initLinkedList(&linked_list, "B");
-    insertEndLinkedList(linked_list, "C");
-    insertEndLinkedList(linked_list, "A");
-    printLinkedList(linked_list);
-    freeLinkedList(&linked_list);
+    initLinkedList(&b_node, "B");
+    insertEndLinkedList(b_node, "C");
+    insertEndLinkedList(b_node, "A");
+    printLinkedList(b_node);
+    insertDArray(&graph, b_node);
 
+    No *c_node;
     printf("Initializing Linked List 'C'...\n");
-    initLinkedList(&linked_list, "C");
-    insertEndLinkedList(linked_list, "A");
-    insertEndLinkedList(linked_list, "B");
-    insertEndLinkedList(linked_list, "D");
-    insertEndLinkedList(linked_list, "E");
-    printLinkedList(linked_list);
-    freeLinkedList(&linked_list);
+    initLinkedList(&c_node, "C");
+    insertEndLinkedList(c_node, "A");
+    insertEndLinkedList(c_node, "B");
+    insertEndLinkedList(c_node, "D");
+    insertEndLinkedList(c_node, "E");
+    printLinkedList(c_node);
+    insertDArray(&graph, c_node);
  
+    No *d_node;
     printf("Initializing Linked List 'D'...\n");
-    initLinkedList(&linked_list, "D");
-    insertEndLinkedList(linked_list, "A");
-    insertEndLinkedList(linked_list, "C");
-    printLinkedList(linked_list);
-    freeLinkedList(&linked_list);
- 
+    initLinkedList(&d_node, "D");
+    insertEndLinkedList(d_node, "A");
+    insertEndLinkedList(d_node, "C");
+    printLinkedList(d_node);
+    insertDArray(&graph, d_node);
+
+    No *e_node;
     printf("Initializing Linked List 'E'...\n");
-    initLinkedList(&linked_list, "E");
-    insertEndLinkedList(linked_list, "C");
-    printLinkedList(linked_list);
-    freeLinkedList(&linked_list);
-    
+    initLinkedList(&e_node, "E");
+    insertEndLinkedList(e_node, "C");
+    printLinkedList(e_node);
+    insertDArray(&graph, e_node);
+
+    printf("\nPrinting the graph with all the above inserted nodes using the print graph function...\n");
+    printDArray(&graph);
+
+    printf("\nFreeing up the whole graph (freeing up each linked list within the DArray, and the DArray itself)...\n");
+    freeDArray(&graph);
+    printf("Attempting to print the Graph (DArray) after it has been freed up...\n");
+    printDArray(&graph);
+    printf("%p\n", graph);
 
     return 0;
 }
@@ -210,4 +238,104 @@ void freeLinkedList(No **p){
     printf("Freeing up element %c...\n", aux->node_name);
     free(aux);
     *p = NULL;
+}
+
+void initDArray(DArray *p, int initial_size){
+    if(initial_size<=0){
+        printf("Initial size is <=0, initializing array with 2 elements...\n");
+        initial_size = 2;
+    }
+    p->array = (No**) malloc(initial_size * sizeof(No));
+    if(p->array==NULL){
+        printf("The Array has not been initialized successfully... (malloc error)\n");
+        return;
+    }
+    p->used = 0;
+    p->initial_size = 2;
+}
+
+
+void insertDArray(DArray *p, No *value){
+    if(p->array==NULL){
+        printf("The Dynamic Array has not been initialized yet!\n");
+        return;
+    }
+
+    if(p->used == p->initial_size){
+        p->array = realloc(p->array, p->initial_size*2*sizeof(No));
+        if(p->array==NULL){
+            printf("The Array could not be resized successfully... (realloc error)\n");
+            return;
+        }
+        p->initial_size *= 2;
+    }
+    p->array[p->used] = value;
+    p->used++;
+}
+
+
+void printDArray(DArray *p){
+    if(p->array==NULL){
+        printf("The Dynamic Array has not been initialized yet!\n");
+        return;
+    }
+    else if(p->used==0){
+        printf("There are no elements in the initialized array!\n");
+        return;
+    }
+
+    printf("Size = %d\n", p->initial_size);
+    printf("Used = %d\n", p->used);
+
+    int i=0;
+    for(;i<p->used-1;i++){
+       printLinkedList(p->array[i]);
+    }
+    printLinkedList(p->array[i]);
+}
+
+
+void removeElementDArray(DArray *p, int index){
+    if(p->array==NULL){
+        printf("The Dynamic Array has not been initialized yet!\n");
+    }
+    else if(p->used==0){
+        printf("There are no elements in the initialized array!\n");
+        return;
+    }
+
+    for(int i=index;i<p->used-1;i++){
+        p->array[i] = p->array[i+1];
+    }
+    p->used--;
+
+    if(p->used <= p->initial_size/2 && (((3/4.0)* p->initial_size) >= 2)){
+        p->initial_size = ((3/4.0)* p->initial_size);
+        printf("Resizing down the array to avoid wasting memory... New size = %d\n", p->initial_size);
+        No **temp = (No**) malloc(p->initial_size * sizeof(No));
+        for(int i=0;i<p->used;i++){
+            temp[i] = p->array[i];
+        }
+        for(int i=0;i<p->used;i++){
+            freeLinkedList(&p->array[i]);
+        }
+        free(p->array);
+        p->array=temp;
+    }
+}
+
+
+void freeDArray(DArray *p){
+    if(p->array==NULL){
+        printf("Array has not been initialized yet!\n");
+        return;
+    }
+    
+    for(int i=0; i<p->used;i++){
+        freeLinkedList(&p->array[i]);
+    }
+    free(p->array);
+    p->array=NULL;
+    p->used=0;
+    p->initial_size=0;
 }
