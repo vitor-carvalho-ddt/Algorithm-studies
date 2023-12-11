@@ -122,13 +122,13 @@ int main(){
 
     printf("\nPrinting the graph with all the above inserted nodes using the print graph function...\n");
     printDArray(&graph);
-
-
-    printf("Removing node A from the Graph...\n");
-    removeElementDArray(&graph, 0);
-    printf("Reprinting the Graph...\n");
-    printDArray(&graph);
-
+    
+    int total = graph.used;
+    for(int i=0;i<total;i++){
+        printf("Removing node %c from the Graph...\n", graph.array[0]->node_name);
+        removeElementDArray(&graph, 0);
+        printDArray(&graph);
+    } 
 
     printf("\nFreeing up the whole graph (freeing up each linked list within the DArray, and the DArray itself)...\n");
     freeDArray(&graph);
