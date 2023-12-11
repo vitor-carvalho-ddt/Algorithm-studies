@@ -119,8 +119,16 @@ int main(){
     printLinkedList(e_node);
     insertDArray(&graph, e_node);
 
+
     printf("\nPrinting the graph with all the above inserted nodes using the print graph function...\n");
     printDArray(&graph);
+
+
+    printf("Removing node A from the Graph...\n");
+    removeElementDArray(&graph, 0);
+    printf("Reprinting the Graph...\n");
+    printDArray(&graph);
+
 
     printf("\nFreeing up the whole graph (freeing up each linked list within the DArray, and the DArray itself)...\n");
     freeDArray(&graph);
@@ -304,6 +312,8 @@ void removeElementDArray(DArray *p, int index){
         return;
     }
 
+    char element = p->array[index]->node_name;
+    freeLinkedList(&p->array[index]);
     for(int i=index;i<p->used-1;i++){
         p->array[i] = p->array[i+1];
     }
@@ -316,11 +326,12 @@ void removeElementDArray(DArray *p, int index){
         for(int i=0;i<p->used;i++){
             temp[i] = p->array[i];
         }
-        for(int i=0;i<p->used;i++){
-            freeLinkedList(&p->array[i]);
-        }
         free(p->array);
         p->array=temp;
+    }
+
+    for(int i=0;i<p->used;i++){
+        removeElementLinkedList(p->array[i], &element);
     }
 }
 
