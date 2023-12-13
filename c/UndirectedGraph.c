@@ -28,6 +28,10 @@ void insertDArray(DArray *p, No* value);
 void fillDArray(DArray *p, int size);
 void removeElementDArray(DArray *p, int index);
 void freeDArray(DArray *p);
+void insertGraphNode(DArray *p, char *node_name);
+int searchIndexDArray(DArray *p, char *node_name);
+void insertGraphConnection(DArray *p, char *node_name, char *conn_node_name);
+void removeGraphConnection(DArray *p, char *node_name, char *conn_node_name);
 
 
 int main(){
@@ -77,7 +81,7 @@ int main(){
     initDArray(&graph, 5);
 
     printf("Printing Undirected Graph 'Linked List' Representation:\n");
-    No *a_node;
+    No *a_node=NULL;
     printf("Initializing Linked List 'A'...\n");
     initLinkedList(&a_node, "A");
     insertEndLinkedList(a_node, "B");
@@ -86,7 +90,7 @@ int main(){
     printLinkedList(a_node);
     insertDArray(&graph, a_node);
 
-    No *b_node;
+    No *b_node=NULL;
     printf("Initializing Linked List 'B'...\n");
     initLinkedList(&b_node, "B");
     insertEndLinkedList(b_node, "C");
@@ -94,7 +98,7 @@ int main(){
     printLinkedList(b_node);
     insertDArray(&graph, b_node);
 
-    No *c_node;
+    No *c_node=NULL;
     printf("Initializing Linked List 'C'...\n");
     initLinkedList(&c_node, "C");
     insertEndLinkedList(c_node, "A");
@@ -104,7 +108,7 @@ int main(){
     printLinkedList(c_node);
     insertDArray(&graph, c_node);
  
-    No *d_node;
+    No *d_node=NULL;
     printf("Initializing Linked List 'D'...\n");
     initLinkedList(&d_node, "D");
     insertEndLinkedList(d_node, "A");
@@ -112,17 +116,33 @@ int main(){
     printLinkedList(d_node);
     insertDArray(&graph, d_node);
 
-    No *e_node;
+    No *e_node=NULL;
     printf("Initializing Linked List 'E'...\n");
     initLinkedList(&e_node, "E");
     insertEndLinkedList(e_node, "C");
     printLinkedList(e_node);
     insertDArray(&graph, e_node);
 
+    printf("Inserting node F into graph via InsertGraph Function...\n");
+    insertGraphNode(&graph, "F");
+    printf("Inserting Graph connection A into F node via insert Graph connection...\n");
+    insertGraphConnection(&graph, "F", "A");
+    printf("Inserting Graph connection D into F node via insert Graph connection...\n");
+    insertGraphConnection(&graph, "F", "D");
+    printf("Inserting Graph connection C into F node via insert Graph connection...\n");
+    insertGraphConnection(&graph, "F", "C");
+    printf("Attempting to Insert a connection to a node G that does not currently exist in the Graph...\n");
+    insertGraphConnection(&graph, "F", "G");
 
     printf("\nPrinting the graph with all the above inserted nodes using the print graph function...\n");
     printDArray(&graph);
-    
+
+    printf("Removing connection D from F node...\n");
+    removeGraphConnection(&graph, "F", "D");
+    printf("Attempting to Remove a conncetion to a node K that does not corrently exist in the Graph...\n");
+    removeGraphConnection(&graph, "F", "K");
+    printDArray(&graph);
+     
     int total = graph.used;
     for(int i=0;i<total;i++){
         printf("Removing node %c from the Graph...\n", graph.array[0]->node_name);
@@ -349,4 +369,63 @@ void freeDArray(DArray *p){
     p->array=NULL;
     p->used=0;
     p->initial_size=0;
+}
+
+
+void insertGraphNode(DArray *p, char *node_name){
+    No *new_linked_list=NULL;
+    initLinkedList(&new_linked_list, node_name);
+    insertDArray(p, new_linked_list);    
+}
+
+
+int searchIndexDArray(DArray *p, char *node_name){
+    if(p==NULL){
+        printf("DArray not initialized!");
+    }
+
+    for(int i=0;i<p->used;i++){
+        if(p->array[i]->node_name==*node_name){
+            return i;
+        }
+    }
+    return -1;
+}
+
+
+void insertGraphConnection(DArray *p, char *node_name, char *conn_node_name){
+    int node_index = searchIndexDArray(p, node_name);
+    if(node_index==-1){
+        printf("Attempting to insert a connection to a node that is not currently in the graph!\n");
+        return;
+    }
+    int conn_node_index = searchIndexDArray(p, conn_node_name);
+    if(conn_node_index==-1){
+        printf("Attempting to insert a connection node that is not currently in the graph!\n");
+        return;
+    }
+
+    No *node = p->array[node_index];
+    No *conn_node = p->array[conn_node_index];
+    insertEndLinkedList(node, conn_node_name);
+    insertEndLinkedList(conn_node, node_name);
+}
+
+
+void removeGraphConnection(DArray *p, char *node_name, char *conn_node_name){
+    int node_index = searchIndexDArray(p, node_name);
+    if(node_index==-1){
+        printf("Attempting to remove a connection to a node that is not currently in the graph!\n");
+        return;
+    }
+    int conn_node_index = searchIndexDArray(p, conn_node_name);
+    if(conn_node_index==-1){
+        printf("Attempting to remove a connection node that is not currently in the graph!\n");
+        return;
+    }
+
+    No *node = p->array[node_index];
+    No *conn_node = p->array[conn_node_index];
+    removeElementLinkedList(node, conn_node_name);
+    removeElementLinkedList(conn_node, node_name);
 }
