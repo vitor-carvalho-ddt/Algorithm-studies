@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+// REVIEWED
+
 #define ZERO 0 // THIS IS FOR DEBUGGING
 #define ASC 1
 #define DESC 0
