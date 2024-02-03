@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+// REVIEWED
+
 void fillArr(int *arr, int size);
 void printArr(int *arr, int size);
 void swap(int *arr, int a, int b);
