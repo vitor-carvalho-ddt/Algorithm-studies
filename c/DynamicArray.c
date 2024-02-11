@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+// REVIWED
 
 typedef struct{
     int *array;
