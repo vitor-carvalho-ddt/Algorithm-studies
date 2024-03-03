@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-// REVIEWED
+// REVIEWED AND POSTED ON YT
 
 typedef struct queue
 {
