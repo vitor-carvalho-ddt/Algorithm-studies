@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-// REVIEWED
+// REVIEWED AND YOUTUBE VIDEO
 
 typedef struct no{
     int value;
