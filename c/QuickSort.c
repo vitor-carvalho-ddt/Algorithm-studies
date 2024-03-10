@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+// NEXT YOUTUBE VIDEO
+
 int partition(int *arr, int start, int end);
 void swap(int *arr, int a, int b);
 void quickSort(int *arr, int start, int end);
