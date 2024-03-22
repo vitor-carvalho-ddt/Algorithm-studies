@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// NEED TO MAKE YOUTUBE VIDEO
+
 void fillArr(int *arr, int size);
 void printArr(int *arr, int size);
 int interpolationSearch(int *arr, int size, int value);
