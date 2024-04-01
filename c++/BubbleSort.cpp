@@ -1,5 +1,7 @@
 #include <iostream>
 
+// ALREADY ON YOUTUBE IN C
+
 void bubbleSort(int nums[], int size, bool asc);
 void swap(int nums[], int i, int j);
 void print_arr(int nums[], int size);
