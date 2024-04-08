@@ -3,7 +3,7 @@
 
 #define SIZE 5
 
-// PROB NEXT YOUTUBE VIDEO (ADDED TO THE LIST)
+// YOUTUBE VIDEO DONE
 
 typedef struct no{
     char node_name;
