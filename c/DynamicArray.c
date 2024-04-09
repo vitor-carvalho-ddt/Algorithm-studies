@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-// REVIWED
+// NEXT YT TUTORIAL
 
 typedef struct{
     int *array;
